@@ -210,11 +210,13 @@
 
     // Update Product List
     function updateProductList() {
-      const productList = document.getElementById('productList');
-      productList.innerHTML = products.map((product) => `
-        <div class="p-2 bg-gray-200 dark:bg-gray-600 rounded dark:text-white">${product.name}</div>
-      `).join('');
-    }
+  const productList = document.getElementById('productList');
+  productList.innerHTML = products.map((product, index) => `
+    <div class="p-2 bg-gray-200 dark:bg-gray-600 rounded dark:text-white">
+      <a href="product-details.html?productId=${index}" class="text-blue-500 hover:text-blue-700">${product.name}</a>
+    </div>
+  `).join('');
+}
 
     // Update Service List
     function updateServiceList() {
