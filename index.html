@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    .overview{
+        font-size: 34px;
+        text-align: center;
+        background-color: rgb(19, 19, 71);
+        margin-bottom: 15px;
+        color: white;
+    }
+  </style>  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ndyakurungi ITECH Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+  <!-- Header -->
+  <header class="bg-white dark:bg-gray-800 shadow">
+    <div class="container mx-auto p-4 flex items-center justify-between">
+      <div class="flex items-center">
+        <div class="text-4xl text-blue-600 dark:text-blue-400 mr-4">
+          <img src="Itech-computers-logo1.webp"> <!-- Replace with your logo -->
+        </div>
+        <div>
+            <h1 class="text-2xl font-bold dark:text-white">NDYAKURUNGI ITECH COMPUTER SOLUTIONS</h1>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Name it, we will provide & deliver it</p> <!-- Replace with your slogan -->
+        </div>
+      </div>
+      <!-- Dark/Light Mode Toggle -->
+      <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+        <i id="themeIcon" class="fas fa-moon text-gray-800 dark:text-yellow-400"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container mx-auto p-8">
+    <!-- Product and Services Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Products Card -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+        <h2 class="text-xl font-semibold mb-4 dark:text-white"><i class="fas fa-box-open mr-2"></i>Products</h2>
+        <button onclick="openAddProductModal()" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors">
+          <i class="fas fa-plus mr-2"></i>Add Product
+        </button>
+        <div class="mt-4">
+          <details class="bg-gray-100 dark:bg-gray-700 p-2 rounded">
+            <summary class="cursor-pointer dark:text-white">View Products</summary>
+            <div id="productList" class="mt-2 space-y-2">
+              <!-- Products will be dynamically added here -->
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- Services Card -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+        <h2 class="text-xl font-semibold mb-4 dark:text-white"><i class="fas fa-cogs mr-2"></i>Services</h2>
+        <button onclick="openAddServiceModal()" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition-colors">
+          <i class="fas fa-plus mr-2"></i>Add Service
+        </button>
+        <div class="mt-4">
+          <details class="bg-gray-100 dark:bg-gray-700 p-2 rounded">
+            <summary class="cursor-pointer dark:text-white">View Services</summary>
+            <div id="serviceList" class="mt-2 space-y-2">
+              <!-- Services will be dynamically added here -->
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+    <h1 class="overview">Overview</h1>
+    <!-- Six Cards Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <!-- Total Sales Card -->
+      <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-lg shadow text-white">
+        <h3 class="text-lg font-semibold"><i class="fas fa-chart-line mr-2"></i>Total Sales</h3>
+        <p class="text-2xl font-bold">Ugx<span id="totalSales">0</span></p>
+      </div>
+      <!-- Gross Profit Card -->
+      <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-lg shadow text-white">
+        <h3 class="text-lg font-semibold"><i class="fas fa-coins mr-2"></i>Gross Profit</h3>
+        <p class="text-2xl font-bold">Ugx<span id="grossProfit">0</span></p>
+      </div>
+      <!-- Total Expenses Card -->
+      <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-6 rounded-lg shadow text-white">
+        <h3 class="text-lg font-semibold"><i class="fas fa-money-bill-wave mr-2"></i>Total Expenses</h3>
+        <p class="text-2xl font-bold">Ugx<span id="totalExpenses">0</span></p>
+      </div>
+      <!-- Debtors Balance Card -->
+      <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 p-6 rounded-lg shadow text-white">
+        <h3 class="text-lg font-semibold"><i class="fas fa-hand-holding-usd mr-2"></i>Debtors Balance</h3>
+        <p class="text-2xl font-bold">Ugx<span id="debtorsBalance">0</span></p>
+      </div>
+      <!-- Net Profit Card -->
+      <div class="bg-gradient-to-r from-pink-500 to-pink-600 p-6 rounded-lg shadow text-white">
+        <h3 class="text-lg font-semibold"><i class="fas fa-chart-pie mr-2"></i>Net Profit</h3>
+        <p class="text-2xl font-bold">Ugx<span id="netProfit">0</span></p>
+      </div>
+      <!-- Stock Balance Card -->
+      <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 p-6 rounded-lg shadow text-white">
+        <h3 class="text-lg font-semibold"><i class="fas fa-boxes mr-2"></i>Stock Balance</h3>
+        <p class="text-2xl font-bold">Ugx<span id="stockBalance">0</span></p>
+      </div>
+    </div>
+
+    <!-- Bar Graph for Sales Analysis -->
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-8">
+      <h3 class="text-lg font-semibold mb-4 dark:text-white"><i class="fas fa-chart-bar mr-2"></i>Sales Analysis (Last 6 Months)</h3>
+      <canvas id="salesBarChart"></canvas>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+      <h3 class="text-lg font-semibold mb-4 dark:text-white"><i class="fas fa-receipt mr-2"></i>Last 3 Transactions</h3>
+      <ul id="recentTransactions" class="space-y-2">
+        <!-- Transactions will be dynamically added here -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div id="addProductModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg w-96">
+      <h3 class="text-lg font-semibold mb-4 dark:text-white"><i class="fas fa-plus mr-2"></i>Add Product</h3>
+      <form id="addProductForm">
+        <input type="text" placeholder="Product Name" class="w-full p-2 border rounded mb-4 dark:bg-gray-700 dark:text-white" required>
+        <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors">Add Product</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Service Modal -->
+  <div id="addServiceModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg w-96">
+      <h3 class="text-lg font-semibold mb-4 dark:text-white"><i class="fas fa-plus mr-2"></i>Add Service</h3>
+      <form id="addServiceForm">
+        <input type="text" placeholder="Service Name" class="w-full p-2 border rounded mb-4 dark:bg-gray-700 dark:text-white" required>
+        <button type="submit" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition-colors">Add Service</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    const products = [];
+    const services = [];
+    let totalSales = 0;
+    let grossProfit = 0;
+    let totalExpenses = 0;
+    let debtorsBalance = 0;
+    let netProfit = 0;
+    let stockBalance = 0;
+    const recentTransactions = [];
+
+    // Dark/Light Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    themeToggle.addEventListener('click', () => {
+      const htmlElement = document.documentElement;
+      htmlElement.classList.toggle('dark');
+      
+      if (htmlElement.classList.contains('dark')) {
+        console.log('Switching to Dark Mode');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+      } else {
+        console.log('Switching to Light Mode');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+      }
+    });
+
+    // Open Add Product Modal
+    function openAddProductModal() {
+      document.getElementById('addProductModal').classList.remove('hidden');
+    }
+
+    // Open Add Service Modal
+    function openAddServiceModal() {
+      document.getElementById('addServiceModal').classList.remove('hidden');
+    }
+
+    // Add Product
+    document.getElementById('addProductForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const productName = e.target[0].value;
+      products.push({ name: productName });
+      alert('Product added successfully!');
+      e.target.reset();
+      document.getElementById('addProductModal').classList.add('hidden');
+      updateProductList();
+    });
+
+    // Add Service
+    document.getElementById('addServiceForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const serviceName = e.target[0].value;
+      services.push({ name: serviceName });
+      alert('Service added successfully!');
+      e.target.reset();
+      document.getElementById('addServiceModal').classList.add('hidden');
+      updateServiceList();
+    });
+
+    // Update Product List
+    function updateProductList() {
+      const productList = document.getElementById('productList');
+      productList.innerHTML = products.map((product) => `
+        <div class="p-2 bg-gray-200 dark:bg-gray-600 rounded dark:text-white">${product.name}</div>
+      `).join('');
+    }
+
+    // Update Service List
+    function updateServiceList() {
+      const serviceList = document.getElementById('serviceList');
+      serviceList.innerHTML = services.map((service) => `
+        <div class="p-2 bg-gray-200 dark:bg-gray-600 rounded dark:text-white">${service.name}</div>
+      `).join('');
+    }
+
+    // Update Overview
+    function updateOverview() {
+      document.getElementById('totalSales').textContent = totalSales.toFixed(2);
+      document.getElementById('grossProfit').textContent = grossProfit.toFixed(2);
+      document.getElementById('totalExpenses').textContent = totalExpenses.toFixed(2);
+      document.getElementById('debtorsBalance').textContent = debtorsBalance.toFixed(2);
+      document.getElementById('netProfit').textContent = netProfit.toFixed(2);
+      document.getElementById('stockBalance').textContent = stockBalance.toFixed(2);
+      const transactionsList = document.getElementById('recentTransactions');
+      transactionsList.innerHTML = recentTransactions.map(t => `<li class="p-2 bg-gray-100 dark:bg-gray-700 rounded dark:text-white">${t}</li>`).join('');
+    }
+
+    // Generate Receipt
+    function generateReceipt(product, profit) {
+      const doc = new jsPDF();
+      doc.text(`Receipt for ${product.name}`, 10, 10);
+      doc.text(`Price: $${product.price.toFixed(2)}`, 10, 20);
+      doc.text(`Profit: $${profit.toFixed(2)}`, 10, 30);
+      doc.save(`receipt_${product.name}.pdf`);
+    }
+
+    // Bar Graph for Sales Analysis
+    const salesBarCtx = document.getElementById('salesBarChart').getContext('2d');
+    const salesBarChart = new Chart(salesBarCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Sales ($)',
+          data: [1200, 1900, 3000, 2500, 2000, 2800],
+          backgroundColor: 'rgba(59, 130, 246, 0.6)',
+          borderColor: 'rgba(59, 130, 246, 1)',
+          borderWidth: 1,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
